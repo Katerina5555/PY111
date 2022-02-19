@@ -8,19 +8,20 @@ from typing import Any
 
 class PriorityQueue:
     def __init__(self):
-        self.__priority_queue = {
-            0: [],
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-            5: [],
-            6: [],
-            7: [],
-            8: [],
-            9: [],
-            10: []
-        }  # todo для очереди можно использовать python dict
+        # self.__priority_queue = {
+        #     0: [],
+        #     1: [],
+        #     2: [],
+        #     3: [],
+        #     4: [],
+        #     5: [],
+        #     6: [],
+        #     7: [],
+        #     8: [],
+        #     9: [],
+        #     10: []
+        # }  # todo для очереди можно использовать python dict
+        self.__priority_queue = {}
 
     def enqueue(self, elem: Any, priority: int = 0) -> None:
         """
@@ -29,8 +30,11 @@ class PriorityQueue:
         :param elem: element to be added
         :return: Nothing
         """
+        try:
+            self.__priority_queue[priority].append(elem)
 
-        self.__priority_queue[priority] = elem
+        except KeyError:
+            self.__priority_queue[priority] = [elem]
 
         return None
 
@@ -41,9 +45,11 @@ class PriorityQueue:
         :return: dequeued element
         """
         for i in range(11):
-            if self.__priority_queue[i]:
-                return self.__priority_queue[i].pop(0)
-
+            try:
+                if self.__priority_queue[i]:
+                    return self.__priority_queue[i].pop(0)
+            except KeyError:
+                continue
             return None
 
     def peek(self, ind: int = 0, priority: int = 0) -> Any:
@@ -53,13 +59,20 @@ class PriorityQueue:
         :param ind: index of element (count from the beginning)
         :return: peeked element
         """
-        for i in range(11):
-            if self.__priority_queue[i]:
-                try:
-                    return self.__priority_queue[i][ind]
-                except IndexError:
-                    ind = 0
-        return None
+        # for i in range(11):
+        #     if self.__priority_queue[i]:
+        #         try:
+        #             return self.__priority_queue[i][ind]
+        #         except IndexError:
+        #             ind = 0
+        #             pass
+        try:
+            if self.__priority_queue[priority]:
+                return self.__priority_queue[priority][ind]
+            else:
+                return None
+        except:
+            return None
 
     def clear(self) -> None:
         """
@@ -67,6 +80,7 @@ class PriorityQueue:
 
         :return: None
         """
-        for priority in range(11):
-            self.__priority_queue[priority] = None
+        # for priority in range(11):
+        #     self.__priority_queue[priority] = None
+        self.__priority_queue.clear()
         return None
